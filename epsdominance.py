@@ -1,9 +1,17 @@
 import numpy as np
+eps = np.array([0.05, 0.05])
+
+lb_fx = np.array([0.0, 0.0])
+
+def compute_eps(f):
+    return np.floor((f - lb_fx) / eps)
 
 def is_dominated(a, b):
     """
     Check if a is dominated by b.
     """
+    a = compute_eps(a)
+    b = compute_eps(b)
     return np.all(a >= b) and np.any(a > b)
 
 def is_non_dominated(a, b):
@@ -22,11 +30,12 @@ def update_non_dominated_solutions(solutions_x, new_solution_x, solutions_fx, ne
     
     for i in range(len(solutions_x)):
         # If the existing solution is dominated by the new solution, skip it
+        # if np.all(compute_eps(new_solution_fx) == compute_eps(solutions_fx[i])): # Si pertenecen a la misma caja, tenemos que tener un metodo diferente para hacer una comparacion de grano fino (vectores, dominancia, distancias).
         if is_dominated(solutions_fx[i], new_solution_fx):
             continue
             
         # If the new solution is dominated by an existing solution, flag it
-        if is_dominated(new_solution_fx, solutions_fx[i]) or np.all(new_solution_fx == solutions_fx[i]):
+        if is_dominated(new_solution_fx, solutions_fx[i]) or np.all(compute_eps(new_solution_fx) == compute_eps(solutions_fx[i])):
             new_solution_dominated = True
         
         # Otherwise, keep the existing solution

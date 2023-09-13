@@ -3,7 +3,7 @@ import numpy as np
 def function_sphere(x):
     return np.sum(x**2, axis=1)
 
-
+# global best
 def pso(nparts, ndims, niter, function, lb, ub, W, C1, C2):
     # Initialize the particles
     x = np.random.random((nparts, ndims)) * (ub - lb) + lb

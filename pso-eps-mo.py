@@ -1,5 +1,5 @@
 import numpy as np
-from dominance import update_non_dominated_solutions, is_non_dominated
+from epsdominance import update_non_dominated_solutions, is_non_dominated
 import random
 
 def function_schafer_1(x):
